@@ -1,0 +1,18 @@
+{
+  "files": {
+    "main.css": "/web_project_around_react_es/static/css/main.6aae6b73.css",
+    "main.js": "/web_project_around_react_es/static/js/main.92f928fb.js",
+    "static/js/453.32a67d18.chunk.js": "/web_project_around_react_es/static/js/453.32a67d18.chunk.js",
+    "static/media/gira.jpg": "/web_project_around_react_es/static/media/gira.48f7e48879ac473f1f25.jpg",
+    "static/media/logo.svg": "/web_project_around_react_es/static/media/logo.4e8e0a1d604782a0dff8e5b1a5441e4d.svg",
+    "index.html": "/web_project_around_react_es/index.html",
+    "static/media/edit-button.svg": "/web_project_around_react_es/static/media/edit-button.a1892ea72cb87c8fc3aa6fbcc02b8d17.svg",
+    "main.6aae6b73.css.map": "/web_project_around_react_es/static/css/main.6aae6b73.css.map",
+    "main.92f928fb.js.map": "/web_project_around_react_es/static/js/main.92f928fb.js.map",
+    "453.32a67d18.chunk.js.map": "/web_project_around_react_es/static/js/453.32a67d18.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.6aae6b73.css",
+    "static/js/main.92f928fb.js"
+  ]
+}
