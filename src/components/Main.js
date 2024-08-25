@@ -1,34 +1,61 @@
 import avatar from "../images/gira.jpg";
 import editButton from "../images/edit-button.svg";
 import addButton from "../images/add_button.png";
+import api from "../utils/api";
+import Card from "./Card";
+import { useState, useEffect } from "react";
 
 export default function Main(props) {
+  const [userName, setUserName] = useState("");
+  const [userDescription, setUserDescription] = useState("");
+  const [userAvatar, setUserAvatar] = useState("");
+  const [cards, setCards] = useState([]);
+
+  useEffect(() => {
+    async function getUserInfo() {
+      const response = await api.getUserInfo();
+      setUserName(response.name);
+      setUserDescription(response.about);
+      setUserAvatar(response.avatar);
+    }
+    getUserInfo();
+  }, []);
+
+  useEffect(() => {
+    async function getCards() {
+      const response = await api.getInitialCards();
+      setCards(response);
+    }
+    getCards();
+  }, []);
   return (
     <main className="content">
       <section className="profile">
-        <div className="profile__content" onClick={props.onEditAvatarClick}>
+        <div className="profile__content">
           <img
             className="profile__avatar"
             src={avatar}
-            alt="Imagen Jacques Cousteau"
+            alt="Imagen de perfil"
+            style={{ backgroundImage: `url(${userAvatar})` }}
           />
           <div className="profile__avatar-container"></div>
           <button
             className="profile__avatar-icon"
             id="edit-avatar-button"
             type="button"
+            onClick={props.onEditAvatarClick}
           ></button>
         </div>
         <div className="profile__info">
-          <h1 className="profile__name">Jacqueline Salas</h1>
-          <button className="profile__edit-button" type="button">
-            <img
-              src={editButton}
-              onClick={props.onEditProfileClick}
-              alt="button-edit"
-            />
+          <h1 className="profile__name">{userName}</h1>
+          <button
+            className="profile__edit-button"
+            type="button"
+            onClick={props.onEditProfileClick}
+          >
+            <img src={editButton} alt="button-edit" />
           </button>
-          <p className="profile__about">Viajera</p>
+          <p className="profile__about">{userDescription}</p>
         </div>
         <button
           className="profile__add-button"
@@ -38,86 +65,19 @@ export default function Main(props) {
           <img src={addButton} alt="add-button" />
         </button>
       </section>
-
-      <div className="popup" id="popup-profile">
-        <form className="popup__form" id="form-profile">
-          <img
-            className="popup__close-icon"
-            src="<%require('./images/Close-Icon.png')%>"
-            alt="boton de cerrar form"
-            id="close-profile-form"
+      <div className="elements">
+        {cards.map((card) => (
+          <Card
+            onCardClick={props.onCardClick}
+            card={card}
+            key={card._id}
+            name={card.name}
+            likes={card.likes}
+            link={card.link}
           />
-          <h2 className="popup__title">Editar Perfil</h2>
-          <input
-            className="popup__input"
-            type="text"
-            name="name"
-            id="input-name"
-            minLength="2"
-            maxLength="40"
-            //value=""
-            placeholder="Nombre"
-            required
-          />
-          <span className="popup__input-error input-name-error"></span>
-          <input
-            className="popup__input"
-            type="text"
-            name="about"
-            id="input-about"
-            minLength="2"
-            maxLength="200"
-            //value=""
-            placeholder="Acerca de mi"
-            required
-          />
-          <span className="popup__input-error input-about-error"></span>
-          <button
-            className="popup__button-save"
-            type="submit"
-            id="profile-button-save"
-          >
-            Guardar
-          </button>
-        </form>
+        ))}
       </div>
 
-      <div className="popup" id="popup-card">
-        <form className="popup__form" id="form-card">
-          <img
-            className="popup__close-icon"
-            src="<%=require('./images/Close-Icon.png')%>"
-            alt="close button"
-            id="close-card-form"
-          />
-          <h2 className="popup__title">Nuevo lugar</h2>
-          <input
-            className="popup__input"
-            id="input-card"
-            type="text"
-            name="name"
-            minLength="2"
-            maxLength="30"
-            value=""
-            placeholder="Título"
-            required
-          />
-          <span className="popup__input-error input-card-error"></span>
-          <input
-            className="popup__input"
-            type="url"
-            name="link"
-            id="input-link"
-            value=""
-            placeholder="Enlace de la imagen"
-            required
-          />
-          <span className="popup__input-error input-link-error"></span>
-          <button className="popup__button-save" type="submit" id="close-card">
-            crear
-          </button>
-        </form>
-      </div>
       <div className="popup" id="popup-image">
         <form className="popup__image-container" id="popup-show-image">
           <img
@@ -154,57 +114,6 @@ export default function Main(props) {
           </button>
         </form>
       </div>
-      <div className="popup" id="popup-avatar">
-        <form className="popup__form" id="form-change-avatar">
-          <img
-            className="popup__close-icon"
-            src="<%=require('./images/Close-Icon.png')%>"
-            alt="close button"
-            id="close-form-avatar"
-          />
-          <h2 className="popup__title">Cambiar foto de perfil</h2>
-          <input
-            className="popup__input"
-            type="url"
-            name="url"
-            value=""
-            id="input-url-avatar"
-            placeholder="Enlace de la imagen"
-            required
-          />
-          <span className="popup__input-error input-link-error"> </span>
-          <button
-            className="popup__button-save"
-            type="submit"
-            id="change-avatar-button"
-          >
-            Guardar
-          </button>
-        </form>
-      </div>
-
-      <div className="elements"></div>
-
-      <template className="template__card">
-        <div className="element">
-          <div className="element__card">
-            <img className="element__image" id="image" src=" " alt=" " />
-            <h3 className="element__text"></h3>
-            <span className="element__like-counter"></span>
-            <img
-              className="element__like-button"
-              alt="boton de me gusta"
-              src="<%=require('./images/Group.png')%>"
-            />
-
-            <img
-              className="element__delete-button"
-              alt=" boton de borrar"
-              src="<%=require('./images/Trash.png')%>"
-            />
-          </div>
-        </div>
-      </template>
     </main>
   );
 }
